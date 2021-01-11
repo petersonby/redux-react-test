@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import { createPost } from '../redux/actions';
+import { createPost, showAlert } from '../redux/actions';
+import { Alert } from './Alert';
 
-const PostForm = ({createPost}) => {
+const PostForm = ({createPost, alert, showAlert}) => {
   const inputEl = useRef(null);
   const [title, setTitle] = useState('');
 
@@ -10,7 +11,7 @@ const PostForm = ({createPost}) => {
     e.preventDefault();
 
     if(!title.length) {
-      return;
+      return showAlert('Empty post title!');
     }
     
     const newPost = {
@@ -24,6 +25,9 @@ const PostForm = ({createPost}) => {
   }
 
   return (
+    <>
+    {alert && <Alert text={alert}/>}
+
     <form>
       <input 
         value={title} 
@@ -36,11 +40,19 @@ const PostForm = ({createPost}) => {
       />
       <button onClick={submitBtn}>Submit post</button>
     </form>
+    </>
   )
 }
 
-const mapDispatchToProps = {
-  createPost
+const mapStateToProps = (state) => {
+  return {
+    alert: state.app.alert
+  };
 }
 
-export default connect(null, mapDispatchToProps)(PostForm);
+const mapDispatchToProps = {
+  createPost,
+  showAlert
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm);

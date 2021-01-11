@@ -5,7 +5,6 @@ import { createPost } from '../redux/actions';
 const PostForm = ({createPost}) => {
   const inputEl = useRef(null);
   const [title, setTitle] = useState('');
-  // const [date, setDate] = useState('');
 
   function submitBtn(e) {
     e.preventDefault();
